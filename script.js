@@ -111,7 +111,7 @@ document.getElementById('contactForm')?.addEventListener('submit', e => {
   }).catch(() => {}); // silent fail — WA is the primary channel
 
   // Redirect to WhatsApp
-  const waText = `Halo, saya *${nama}* (${email}).%0A%0A${pesan}`;
+  const waText = `Halo, saya ${nama} (${email}).\n\n${pesan}`;
   window.open(`https://wa.me/62895324603443?text=${encodeURIComponent(waText)}`, '_blank');
 
   alert('Pesan Anda telah dikirim! Anda akan diarahkan ke WhatsApp.');
