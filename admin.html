@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Desa Cinnongtabi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: var(--gray-50); }
+    .admin-login, .admin-dash { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .admin-login { max-width: 400px; margin-top: 15vh; }
+    .admin-login .card { text-align: center; }
+    .admin-login h2 { margin-bottom: 8px; }
+    .admin-login p { color: var(--gray-600); font-size: .9rem; margin-bottom: 24px; }
+    .admin-login .form-group { text-align: left; }
+    .hidden { display: none !important; }
+    .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+    .admin-header h1 { font-size: 1.6rem; }
+    .admin-section { margin-bottom: 32px; }
+    .admin-section .card { margin-bottom: 0; }
+    .admin-section h3 { margin-bottom: 16px; color: var(--green-800); }
+    .form-group { margin-bottom: 16px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:600px) { .form-row { grid-template-columns: 1fr; } }
+    .btn--sm { padding: 10px 20px; font-size: .85rem; }
+    .btn--danger { background: #e53935; color: #fff; }
+    .btn--danger:hover { background: #c62828; }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--green-800); color: #fff; padding: 14px 24px; border-radius: var(--radius-sm); font-size: .9rem; box-shadow: var(--shadow-lg); transform: translateY(100px); opacity: 0; transition: all .3s ease; z-index: 9999; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .gallery-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 16px; }
+    .gallery-admin-item { position: relative; aspect-ratio: 4/3; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--gray-200); background: var(--gray-100); }
+    .gallery-admin-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-admin-item .remove-btn { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; border: none; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
+    .gallery-admin-item .remove-btn:hover { background: #e53935; }
+    .nav-admin { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 16px 0; margin-bottom: 0; }
+    .nav-admin .container { display: flex; align-items: center; justify-content: space-between; }
+    .nav-admin a { color: var(--green-800); font-weight: 600; font-family: 'Poppins', sans-serif; }
+    textarea.content-area { min-height: 100px; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage" class="admin-login">
+  <div class="card">
+    <h2>🔐 Admin Panel</h2>
+    <p>Desa Cinnongtabi — Sistem Manajemen Konten</p>
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="loginUser">Username</label>
+        <input type="text" id="loginUser" placeholder="admin" required>
+      </div>
+      <div class="form-group">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn--green" style="width:100%;justify-content:center;margin-top:8px">Masuk</button>
+      <p id="loginError" style="color:#e53935;margin-top:12px;font-size:.85rem" class="hidden">Username atau password salah!</p>
+    </form>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashPage" class="hidden">
+  <div class="nav-admin">
+    <div class="container">
+      <a href="index.html" target="_blank">← Lihat Website</a>
+      <button class="btn btn--outline btn--sm" style="color:var(--gray-700);border-color:var(--gray-300)" onclick="logout()">Logout</button>
+    </div>
+  </div>
+  <div class="admin-dash">
+    <div class="admin-header">
+      <div>
+        <h1>Dashboard Admin</h1>
+        <p style="color:var(--gray-600);font-size:.9rem">Kelola konten website Desa Cinnongtabi</p>
+      </div>
+      <button class="btn btn--green btn--sm" onclick="saveAll()">💾 Simpan Semua</button>
+    </div>
+
+    <!-- HERO -->
+    <div class="admin-section">
+      <div class="card">
+        <h3>🏠 Hero / Beranda</h3>
+        <div class="form-group">
+          <label>Tagline Utama</label>
+          <input type="text" id="heroTitle" placeholder="Selamat Datang di Desa Cinnongtabi">
+        </div>
+        <div class="form-group">
+          <label>Sub-judul</label>
+          <textarea id="heroSubtitle" class="content-area" placeholder="Deskripsi singkat..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEJARAH -->
+    <div class="admin-section">
+      <div class="card">
+        <h3>📜 Sejarah Desa</h3>
+        <div class="form-group">
+          <label>Konten Sejarah</label>
+          <textarea id="sejarahContent" class="content-area" rows="5"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- VISI MISI -->
+    <div class="admin-section">
+      <div class="card">
+        <h3>🎯 Visi & Misi</h3>
+        <div class="form-group">
+          <label>Visi</label>
+          <textarea id="visiContent" class="content-area" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Misi (satu per baris)</label>
+          <textarea id="misiContent" class="content-area" rows="6" placeholder="Misi 1&#10;Misi 2&#10;Misi 3"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- POTENSI -->
+    <div class="admin-section">
+      <div class="card">
+        <h3>🌾 Potensi Desa</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Potensi Pertanian</label>
+            <textarea id="potensiTani" class="content-area" rows="4"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Potensi Peternakan</label>
+            <textarea id="potensiTernak" class="content-area" rows="4"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTAK -->
+    <div class="admin-section">
+      <div class="card">
+        <h3>📞 Kontak</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Alamat</label>
+            <input type="text" id="kontakAlamat">
+          </div>
+          <div class="form-group">
+            <label>No. WhatsApp</label>
+            <input type="text" id="kontakWA" placeholder="6282343560094">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="kontakEmail">
+          </div>
+          <div class="form-group">
+            <label>Kode Wilayah</label>
+            <input type="text" id="kontakKode">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GALERI -->
+    <div class="admin-section">
+      <div class="card">
+        <h3>📷 Galeri</h3>
+        <div class="gallery-admin-grid" id="galleryGrid"></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Tambah Gambar (URL)</label>
+            <input type="text" id="newGalleryUrl" placeholder="https://...">
+          </div>
+          <div class="form-group">
+            <label>Keterangan</label>
+            <input type="text" id="newGalleryAlt" placeholder="Deskripsi gambar">
+          </div>
+        </div>
+        <button class="btn btn--green btn--sm" onclick="addGalleryItem()">+ Tambah Gambar</button>
+      </div>
+    </div>
+
+    <!-- RESET -->
+    <div class="admin-section" style="text-align:center;padding:20px 0">
+      <button class="btn btn--danger btn--sm" onclick="resetAll()">🗑️ Reset ke Default</button>
+      <p style="color:var(--gray-600);font-size:.8rem;margin-top:8px">Menghapus semua perubahan dan kembali ke konten awal</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Tersimpan!</div>
+
+<script>
+// ponytail: localStorage-only CMS — no backend, data lives in browser only
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'desa2026';
+const STORAGE_KEY = 'cinnongtabi_cms';
+
+// Default content (mirrors index.html)
+const DEFAULTS = {
+  heroTitle: 'Selamat Datang di Desa Cinnongtabi',
+  heroSubtitle: 'Pusat informasi dan pelayanan digital desa — menyediakan informasi secara cepat, akurat, dan transparan kepada masyarakat.',
+  sejarahContent: 'Nama "Cinnongtabi" berasal dari nama kerajaan Petta Cinnongtabi (Lapatiroi) yang pernah berdiri di wilayah ini. Masyarakat desa sejak awal menggantungkan mata pencaharian pada sektor pertanian dan perdagangan, dengan nilai-nilai kebersamaan yang masih dijaga hingga kini.',
+  visiContent: 'Penggerak keberdayaan masyarakat, kelembagaan dan pemerintahan desa berbasis sumber daya lokal menuju masyarakat pedesaan yang maju, mandiri, berdaya saing dan sejahtera.',
+  misiContent: 'Memotivasi peningkatan kualitas hidup masyarakat desa.\nMemfasilitasi kemandirian dan partisipasi aktif masyarakat.\nMendorong pemberdayaan dan pembangunan yang digerakkan oleh masyarakat sendiri.\nMelaksanakan pembangunan di segala bidang secara berkelanjutan.\nMenciptakan tata lingkungan desa yang sejuk, bersih, aman, indah, dan sehat.\nMewujudkan tata pemerintahan yang transparan, partisipatif, dan akuntabel.',
+  potensiTani: 'Pertanian merupakan sektor unggulan Desa Cinnongtabi dengan komoditas utama padi. Masyarakat secara turun-temurun mengelola lahan pertanian melalui semangat gotong royong, menjadikan desa ini salah satu penghasil pangan penting di Kecamatan Majauleng.',
+  potensiTernak: 'Peternakan sapi merupakan tradisi turun-temurun masyarakat. Pakan ternak diperoleh dari limbah pertanian seperti jerami, sementara kotoran ternak diolah menjadi pupuk organik — menciptakan integrasi yang saling menguntungkan antara sektor pertanian dan peternakan.',
+  kontakAlamat: 'Kantor Desa Cinnongtabi, Desa Cinnongtabi, Kec. Majauleng, Kab. Wajo, Sulawesi Selatan',
+  kontakWA: '6282343560094',
+  kontakEmail: 'desacinnongtabi@gmail.com',
+  kontakKode: '73.13.05.2006',
+  gallery: [
+    { src: 'https://placehold.co/600x450/2E7D32/white?text=Kegiatan+Desa+1', alt: 'Kegiatan Desa 1' },
+    { src: 'https://placehold.co/600x450/388E3C/white?text=Kegiatan+Desa+2', alt: 'Kegiatan Desa 2' },
+    { src: 'https://placehold.co/600x450/43A047/white?text=Suasana+Desa', alt: 'Suasana Desa' },
+    { src: 'https://placehold.co/600x450/1B5E20/white?text=Pertanian', alt: 'Pertanian' },
+    { src: 'https://placehold.co/600x450/66BB6A/white?text=Peternakan', alt: 'Peternakan' },
+    { src: 'https://placehold.co/600x450/4CAF50/white?text=Gotong+Royong', alt: 'Gotong Royong' }
+  ]
+};
+
+function getData() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { ...DEFAULTS }; }
+  catch { return { ...DEFAULTS }; }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg || 'Tersimpan!';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// LOGIN
+document.getElementById('loginForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const u = document.getElementById('loginUser').value;
+  const p = document.getElementById('loginPass').value;
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    sessionStorage.setItem('admin_logged', '1');
+    showDash();
+  } else {
+    document.getElementById('loginError').classList.remove('hidden');
+  }
+});
+
+function showDash() {
+  document.getElementById('loginPage').classList.add('hidden');
+  document.getElementById('dashPage').classList.remove('hidden');
+  loadForm();
+}
+
+function logout() {
+  sessionStorage.removeItem('admin_logged');
+  location.reload();
+}
+
+// LOAD
+function loadForm() {
+  const d = getData();
+  document.getElementById('heroTitle').value = d.heroTitle || DEFAULTS.heroTitle;
+  document.getElementById('heroSubtitle').value = d.heroSubtitle || DEFAULTS.heroSubtitle;
+  document.getElementById('sejarahContent').value = d.sejarahContent || DEFAULTS.sejarahContent;
+  document.getElementById('visiContent').value = d.visiContent || DEFAULTS.visiContent;
+  document.getElementById('misiContent').value = d.misiContent || DEFAULTS.misiContent;
+  document.getElementById('potensiTani').value = d.potensiTani || DEFAULTS.potensiTani;
+  document.getElementById('potensiTernak').value = d.potensiTernak || DEFAULTS.potensiTernak;
+  document.getElementById('kontakAlamat').value = d.kontakAlamat || DEFAULTS.kontakAlamat;
+  document.getElementById('kontakWA').value = d.kontakWA || DEFAULTS.kontakWA;
+  document.getElementById('kontakEmail').value = d.kontakEmail || DEFAULTS.kontakEmail;
+  document.getElementById('kontakKode').value = d.kontakKode || DEFAULTS.kontakKode;
+  renderGallery(d.gallery || DEFAULTS.gallery);
+}
+
+// GALLERY
+function renderGallery(items) {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = items.map((item, i) =>
+    `<div class="gallery-admin-item">
+      <img src="${item.src}" alt="${item.alt}">
+      <button class="remove-btn" onclick="removeGalleryItem(${i})" title="Hapus">&times;</button>
+    </div>`
+  ).join('');
+}
+
+function addGalleryItem() {
+  const url = document.getElementById('newGalleryUrl').value.trim();
+  const alt = document.getElementById('newGalleryAlt').value.trim() || 'Foto Desa';
+  if (!url) return alert('Masukkan URL gambar!');
+  const d = getData();
+  if (!d.gallery) d.gallery = [...DEFAULTS.gallery];
+  d.gallery.push({ src: url, alt });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+  renderGallery(d.gallery);
+  document.getElementById('newGalleryUrl').value = '';
+  document.getElementById('newGalleryAlt').value = '';
+  showToast('Gambar ditambahkan!');
+}
+
+function removeGalleryItem(i) {
+  if (!confirm('Hapus gambar ini?')) return;
+  const d = getData();
+  d.gallery.splice(i, 1);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+  renderGallery(d.gallery);
+  showToast('Gambar dihapus!');
+}
+
+// SAVE
+function saveAll() {
+  const d = {
+    heroTitle: document.getElementById('heroTitle').value,
+    heroSubtitle: document.getElementById('heroSubtitle').value,
+    sejarahContent: document.getElementById('sejarahContent').value,
+    visiContent: document.getElementById('visiContent').value,
+    misiContent: document.getElementById('misiContent').value,
+    potensiTani: document.getElementById('potensiTani').value,
+    potensiTernak: document.getElementById('potensiTernak').value,
+    kontakAlamat: document.getElementById('kontakAlamat').value,
+    kontakWA: document.getElementById('kontakWA').value,
+    kontakEmail: document.getElementById('kontakEmail').value,
+    kontakKode: document.getElementById('kontakKode').value,
+    gallery: getData().gallery || DEFAULTS.gallery
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+  showToast('✅ Semua perubahan tersimpan!');
+}
+
+// RESET
+function resetAll() {
+  if (!confirm('Reset semua konten ke default? Perubahan akan hilang.')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  loadForm();
+  showToast('Konten direset ke default');
+}
+
+// Auto-login check
+if (sessionStorage.getItem('admin_logged') === '1') showDash();
+</script>
+</body>
+</html>
