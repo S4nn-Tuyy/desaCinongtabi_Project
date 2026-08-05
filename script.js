@@ -98,8 +98,24 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 // ===== CONTACT FORM (UI ONLY) =====
 document.getElementById('contactForm')?.addEventListener('submit', e => {
   e.preventDefault();
-  alert('Terima kasih! Pesan Anda telah dikirim. (Demo — belum terhubung ke server)');
-  e.target.reset();
+  const form = e.target;
+  const nama = form.querySelector('#nama').value;
+  const email = form.querySelector('#email').value;
+  const pesan = form.querySelector('#pesan').value;
+
+  // Submit to Netlify Forms (silent)
+  fetch('/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(new FormData(form)).toString()
+  }).catch(() => {}); // silent fail — WA is the primary channel
+
+  // Redirect to WhatsApp
+  const waText = `Halo, saya *${nama}* (${email}).%0A%0A${pesan}`;
+  window.open(`https://wa.me/6282343560094?text=${encodeURIComponent(waText)}`, '_blank');
+
+  alert('Pesan Anda telah dikirim! Anda akan diarahkan ke WhatsApp.');
+  form.reset();
 });
 
 // ===== CMS: LOAD DATA FROM LOCALSTORAGE =====
