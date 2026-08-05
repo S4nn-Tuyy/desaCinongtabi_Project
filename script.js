@@ -112,7 +112,7 @@ document.getElementById('contactForm')?.addEventListener('submit', e => {
 
   // Redirect to WhatsApp
   const waText = `Halo, saya *${nama}* (${email}).%0A%0A${pesan}`;
-  window.open(`https://wa.me/6282343560094?text=${encodeURIComponent(waText)}`, '_blank');
+  window.open(`https://wa.me/62895324603443?text=${encodeURIComponent(waText)}`, '_blank');
 
   alert('Pesan Anda telah dikirim! Anda akan diarahkan ke WhatsApp.');
   form.reset();
