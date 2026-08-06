@@ -248,9 +248,12 @@ tbody tr:last-child td { border-bottom: none; }
 }
 .potensi-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
 .potensi-card__img {
-  height: 220px; background: linear-gradient(135deg, var(--green-100), var(--green-50));
-  display: flex; align-items: center; justify-content: center; font-size: 4rem;
+  height: 220px; overflow: hidden;
 }
+.potensi-card__img img {
+  width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease;
+}
+.potensi-card:hover .potensi-card__img img { transform: scale(1.06); }
 .potensi-card__body { padding: 28px; }
 .potensi-card__body h3 { margin-bottom: 12px; }
 .potensi-card__body p { color: var(--gray-600); font-size: .9rem; }
