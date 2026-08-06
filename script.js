@@ -63,19 +63,7 @@ document.querySelectorAll('.gallery-item').forEach(item => {
     }
   });
 });
-// dokumentasi items reuse lightbox
-document.querySelectorAll('.doc-item').forEach(item => {
-  item.addEventListener('click', () => {
-    const img = item.querySelector('img');
-    if (lightboxImg && img) {
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      if (lightboxCaption) lightboxCaption.textContent = item.querySelector('.doc-item__caption')?.textContent || img.alt;
-      lightbox.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-  });
-});
+
 lightbox?.querySelector('.lightbox__close')?.addEventListener('click', closeLightbox);
 lightbox?.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
