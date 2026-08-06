@@ -106,64 +106,198 @@ document.getElementById('contactForm')?.addEventListener('submit', e => {
   form.reset();
 });
 
-// ===== CMS: LOAD DATA FROM LOCALSTORAGE =====
+// ===== CMS: LOAD ALL DATA FROM LOCALSTORAGE =====
 (function loadCMS() {
   try {
     const d = JSON.parse(localStorage.getItem('cinnongtabi_cms'));
     if (!d) return;
 
+    // Helper for safe text update
+    const setText = (id, text) => {
+      const el = document.getElementById(id);
+      if (el && text !== undefined) el.textContent = text;
+    };
+    // Helper for safe src update
+    const setSrc = (id, src) => {
+      const el = document.getElementById(id);
+      if (el && src) el.src = src;
+    };
+
+    // Branding & Logo
+    if (d.logoUrl) {
+      setSrc('navLogo', d.logoUrl);
+      const favicon = document.querySelector('link[rel="icon"]');
+      if (favicon) favicon.href = d.logoUrl;
+    }
+    if (d.namaDesa) {
+      setText('navBrandName', d.namaDesa);
+      setText('footerDesaName', d.namaDesa);
+    }
+
     // Hero
-    const heroH1 = document.querySelector('.hero h1');
-    const heroSub = document.querySelector('.hero__subtitle');
-    if (d.heroTitle && heroH1) heroH1.textContent = d.heroTitle;
-    if (d.heroSubtitle && heroSub) heroSub.textContent = d.heroSubtitle;
+    setText('heroBadge', d.heroBadge);
+    setText('heroTitle', d.heroTitle);
+    setText('heroSubtitle', d.heroSubtitle);
+
+    // Ringkasan Cards
+    setText('ringkasanTitle', d.ringkasanTitle);
+    setText('ringkasanDesc', d.ringkasanDesc);
+    setText('card1Title', d.card1Title);
+    setText('card1Desc', d.card1Desc);
+    setSrc('card1Img', d.card1Img);
+    setText('card2Title', d.card2Title);
+    setText('card2Desc', d.card2Desc);
+    setSrc('card2Img', d.card2Img);
+    setText('card3Title', d.card3Title);
+    setText('card3Desc', d.card3Desc);
+    setSrc('card3Img', d.card3Img);
 
     // Sejarah
-    const sejarahP = document.querySelector('#tab-sejarah .subsection p');
-    if (d.sejarahContent && sejarahP) sejarahP.textContent = d.sejarahContent;
+    setText('sejarahDesc', d.sejarahContent);
 
-    // Visi
-    const visiP = document.querySelector('.visi-box p');
-    if (d.visiContent && visiP) visiP.textContent = d.visiContent;
-
-    // Misi
-    if (d.misiContent) {
-      const misiList = document.querySelector('.misi-list');
-      if (misiList) {
-        const items = d.misiContent.split('\n').filter(s => s.trim());
-        misiList.innerHTML = items.map(m => `<li>${m}</li>`).join('');
+    // Sejarah Pemerintahan / Timeline
+    if (d.pemerintahanList && d.pemerintahanList.length) {
+      const timelineEl = document.getElementById('timelineList');
+      if (timelineEl) {
+        timelineEl.innerHTML = d.pemerintahanList.map(item => `
+          <div class="timeline__item">
+            <h4>${item.nama}</h4>
+            <p>${item.periode}</p>
+          </div>
+        `).join('');
       }
     }
 
-    // Potensi
-    const potensiCards = document.querySelectorAll('.potensi-card__body p');
-    if (d.potensiTani && potensiCards[0]) potensiCards[0].textContent = d.potensiTani;
-    if (d.potensiTernak && potensiCards[1]) potensiCards[1].textContent = d.potensiTernak;
+    // Visi & Misi
+    setText('visiDesc', d.visiContent);
+    if (d.misiContent) {
+      const misiEl = document.getElementById('misiList');
+      if (misiEl) {
+        const items = d.misiContent.split('\n').filter(s => s.trim());
+        misiEl.innerHTML = items.map(m => `<li>${m}</li>`).join('');
+      }
+    }
 
-    // Kontak
-    const kontakItems = document.querySelectorAll('.contact-item');
-    if (d.kontakAlamat && kontakItems[0]) kontakItems[0].querySelector('p').textContent = d.kontakAlamat;
-    if (d.kontakWA && kontakItems[1]) {
-      const waLink = kontakItems[1].querySelector('a');
-      waLink.href = `https://wa.me/${d.kontakWA}`;
-      waLink.textContent = d.kontakWA.replace(/^62/, '0').replace(/(\d{4})(\d{4})(\d+)/, '$1-$2-$3');
-      // Update floating WA button too
+    // Struktur Organisasi
+    if (d.strukturImg) {
+      const orgContainer = document.getElementById('strukturContainer');
+      if (orgContainer) {
+        orgContainer.innerHTML = `<img src="${d.strukturImg}" alt="Struktur Organisasi Desa" style="max-width:100%;border-radius:12px;box-shadow:var(--shadow-md)">`;
+      }
+    }
+
+    // Geografi
+    setText('statLuas', d.geoLuas);
+    setText('statSawah', d.geoSawah);
+    setText('statKering', d.geoKering);
+    setText('geoUtara', d.geoUtara);
+    setText('geoSelatan', d.geoSelatan);
+    setText('geoTimur', d.geoTimur);
+    setText('geoBarat', d.geoBarat);
+
+    // Data Kependudukan
+    setText('statTotalPenduduk', d.pendudukTotal);
+    setText('statLaki', d.pendudukLaki);
+    setText('statPerempuan', d.pendudukPerempuan);
+
+    // Dusun Table
+    if (d.dusunList && d.dusunList.length) {
+      const dusunBody = document.getElementById('tableDusunBody');
+      if (dusunBody) {
+        dusunBody.innerHTML = d.dusunList.map(row => `
+          <tr><td>${row.nama}</td><td>${row.laki}</td><td>${row.perempuan}</td><td>${row.total}</td></tr>
+        `).join('');
+      }
+    }
+
+    // Pendidikan Table
+    if (d.pendidikanList) {
+      const body = document.getElementById('tablePendidikanBody');
+      if (body) {
+        const rows = d.pendidikanList.split('\n').filter(s => s.trim());
+        body.innerHTML = rows.map((r, i) => {
+          const parts = r.split(':');
+          return `<tr><td>${i+1}</td><td>${parts[0]?.trim() || ''}</td><td>${parts[1]?.trim() || '-'}</td></tr>`;
+        }).join('');
+      }
+    }
+
+    // Mata Pencaharian Table
+    if (d.pencaharianList) {
+      const body = document.getElementById('tablePencaharianBody');
+      if (body) {
+        const rows = d.pencaharianList.split('\n').filter(s => s.trim());
+        body.innerHTML = rows.map(r => {
+          const parts = r.split(':');
+          return `<tr><td>${parts[0]?.trim() || ''}</td><td>${parts[1]?.trim() || '-'}</td></tr>`;
+        }).join('');
+      }
+    }
+
+    // Kepemilikan Hewan Ternak Table
+    if (d.ternakList) {
+      const body = document.getElementById('tableTernakBody');
+      if (body) {
+        const rows = d.ternakList.split('\n').filter(s => s.trim());
+        body.innerHTML = rows.map(r => {
+          const parts = r.split(':');
+          return `<tr><td>${parts[0]?.trim() || ''}</td><td>${parts[1]?.trim() || '-'}</td></tr>`;
+        }).join('');
+      }
+    }
+
+    // Prasarana Badges
+    if (d.prasaranaList) {
+      const list = document.getElementById('prasaranaBadgeList');
+      if (list) {
+        const badges = d.prasaranaList.split('\n').filter(s => s.trim());
+        list.innerHTML = badges.map(b => `<span class="badge">${b}</span>`).join('');
+      }
+    }
+
+    // Potensi Desa
+    setText('potensiHeaderTitle', d.potensiTitle);
+    setText('potensiHeaderDesc', d.potensiSub);
+    setText('potensiTaniTitle', d.potensiTaniTitle);
+    setText('potensiTaniDesc', d.potensiTani);
+    setSrc('potensiTaniImg', d.potensiTaniImg);
+    setText('potensiTernakTitle', d.potensiTernakTitle);
+    setText('potensiTernakDesc', d.potensiTernak);
+    setSrc('potensiTernakImg', d.potensiTernakImg);
+
+    // Kontak & Footer
+    setText('kontakAlamat', d.kontakAlamat);
+    if (d.kontakWA) {
+      const waFormatted = d.kontakWA.replace(/^62/, '0').replace(/(\d{4})(\d{4})(\d+)/, '$1-$2-$3');
+      const waUrl = `https://wa.me/${d.kontakWA}`;
+      
+      const waLink = document.getElementById('kontakWA');
+      if (waLink) { waLink.href = waUrl; waLink.textContent = waFormatted; }
+      
+      const footerWA = document.getElementById('footerWA');
+      if (footerWA) footerWA.href = waUrl;
+
       const waFloat = document.querySelector('.wa-float');
-      if (waFloat) waFloat.href = `https://wa.me/${d.kontakWA}`;
+      if (waFloat) waFloat.href = waUrl;
     }
-    if (d.kontakEmail && kontakItems[2]) {
-      const emailLink = kontakItems[2].querySelector('a');
-      emailLink.href = `mailto:${d.kontakEmail}`;
-      emailLink.textContent = d.kontakEmail;
+    if (d.kontakEmail) {
+      const emailLink = document.getElementById('kontakEmail');
+      if (emailLink) { emailLink.href = `mailto:${d.kontakEmail}`; emailLink.textContent = d.kontakEmail; }
+      const footerEmail = document.getElementById('footerEmail');
+      if (footerEmail) footerEmail.href = `mailto:${d.kontakEmail}`;
     }
-    if (d.kontakKode && kontakItems[3]) kontakItems[3].querySelector('p').textContent = d.kontakKode;
+    if (d.kontakKode) {
+      setText('kontakKode', d.kontakKode);
+      const footerKode = document.getElementById('footerKode');
+      if (footerKode) footerKode.textContent = `Kode Wilayah: ${d.kontakKode}`;
+    }
 
     // Gallery
     if (d.gallery && d.gallery.length) {
-      const grid = document.querySelector('.gallery-grid');
+      const grid = document.getElementById('galleryGrid');
       if (grid) {
         grid.innerHTML = d.gallery.map(item =>
-          `<div class="gallery-item"><img src="${item.src}" alt="${item.alt}"></div>`
+          `<div class="gallery-item"><img src="${item.src}" alt="${item.alt || 'Foto Galeri'}"></div>`
         ).join('');
         // Re-bind lightbox
         grid.querySelectorAll('.gallery-item').forEach(item => {
@@ -180,5 +314,5 @@ document.getElementById('contactForm')?.addEventListener('submit', e => {
         });
       }
     }
-  } catch (e) { /* silent fail — show default content */ }
+  } catch (e) { /* silent fail — fallback to index.html static markup */ }
 })();

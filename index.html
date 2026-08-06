@@ -17,8 +17,8 @@
 <nav class="navbar" id="navbar">
   <div class="container">
     <a href="#beranda" class="navbar__brand">
-      <img src="dokumentasi/logo.png" alt="Logo Desa Cinnongtabi">
-      <span>Desa Cinnongtabi</span>
+      <img src="dokumentasi/logo.png" alt="Logo Desa Cinnongtabi" id="navLogo">
+      <span id="navBrandName">Desa Cinnongtabi</span>
     </a>
     <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
     <ul class="navbar__links" id="navLinks">
@@ -35,40 +35,38 @@
 <!-- HERO -->
 <section class="hero" id="beranda">
   <div class="hero__content">
-    <div class="hero__badge">🏡 Kecamatan Majauleng, Kabupaten Wajo</div>
-    <h1>Selamat Datang di Desa Cinnongtabi</h1>
-    <p class="hero__subtitle">Pusat informasi dan pelayanan digital desa — menyediakan informasi secara cepat, akurat, dan transparan kepada masyarakat.</p>
+    <div class="hero__badge" id="heroBadge">🏡 Kecamatan Majauleng, Kabupaten Wajo</div>
+    <h1 id="heroTitle">Selamat Datang di Desa Cinnongtabi</h1>
+    <p class="hero__subtitle" id="heroSubtitle">Pusat informasi dan pelayanan digital desa — menyediakan informasi secara cepat, akurat, dan transparan kepada masyarakat.</p>
     <div class="hero__buttons">
       <a href="#tentang" class="btn btn--primary">Tentang Kami</a>
       <a href="#kontak" class="btn btn--outline">Hubungi Kami</a>
     </div>
   </div>
   <div class="hero__scroll"><small>Scroll</small><span></span></div>
-</section>
-
-<!-- RINGKASAN BERANDA -->
+</sec<!-- RINGKASAN BERANDA -->
 <section id="ringkasan">
   <div class="container">
     <div class="section__header fade-in">
       <div class="accent-line"></div>
-      <h2>Mengenal Desa Cinnongtabi</h2>
-      <p>Desa yang dikenal dengan lingkungan asri, hamparan lahan pertanian, dan nilai kebersamaan serta gotong royong yang kental.</p>
+      <h2 id="ringkasanTitle">Mengenal Desa Cinnongtabi</h2>
+      <p id="ringkasanDesc">Desa yang dikenal dengan lingkungan asri, hamparan lahan pertanian, dan nilai kebersamaan serta gotong royong yang kental.</p>
     </div>
     <div class="home-cards">
       <div class="card fade-in">
-        <div class="card__thumb"><img src="dokumentasi/card_geografis.png" alt="Letak Geografis"></div>
-        <h3>Letak Geografis</h3>
-        <p>Terletak di Kecamatan Majauleng, Kabupaten Wajo, Sulawesi Selatan dengan luas wilayah ± 17,85 Km².</p>
+        <div class="card__thumb"><img src="dokumentasi/card_geografis.png" alt="Letak Geografis" id="card1Img"></div>
+        <h3 id="card1Title">Letak Geografis</h3>
+        <p id="card1Desc">Terletak di Kecamatan Majauleng, Kabupaten Wajo, Sulawesi Selatan dengan luas wilayah ± 17,85 Km².</p>
       </div>
       <div class="card fade-in">
-        <div class="card__thumb"><img src="dokumentasi/card_pertanian.png" alt="Potensi Pertanian"></div>
-        <h3>Potensi Pertanian</h3>
-        <p>Sektor unggulan dengan komoditas utama padi dan pengelolaan lahan secara gotong royong.</p>
+        <div class="card__thumb"><img src="dokumentasi/card_pertanian.png" alt="Potensi Pertanian" id="card2Img"></div>
+        <h3 id="card2Title">Potensi Pertanian</h3>
+        <p id="card2Desc">Sektor unggulan dengan komoditas utama padi dan pengelolaan lahan secara gotong royong.</p>
       </div>
       <div class="card fade-in">
-        <div class="card__thumb"><img src="dokumentasi/card_peternakan.png" alt="Potensi Peternakan"></div>
-        <h3>Potensi Peternakan</h3>
-        <p>Peternakan sapi turun-temurun dengan integrasi pakan dari limbah pertanian.</p>
+        <div class="card__thumb"><img src="dokumentasi/card_peternakan.png" alt="Potensi Peternakan" id="card3Img"></div>
+        <h3 id="card3Title">Potensi Peternakan</h3>
+        <p id="card3Desc">Peternakan sapi turun-temurun dengan integrasi pakan dari limbah pertanian.</p>
       </div>
     </div>
   </div>
@@ -95,11 +93,11 @@
     <div id="tab-sejarah" class="tab-content active fade-in">
       <div class="subsection">
         <h3>Sejarah Desa</h3>
-        <p style="margin-bottom:16px;color:var(--gray-600)">Nama "Cinnongtabi" berasal dari nama kerajaan Petta Cinnongtabi (Lapatiroi) yang pernah berdiri di wilayah ini. Masyarakat desa sejak awal menggantungkan mata pencaharian pada sektor pertanian dan perdagangan, dengan nilai-nilai kebersamaan yang masih dijaga hingga kini.</p>
+        <p id="sejarahDesc" style="margin-bottom:16px;color:var(--gray-600)">Nama "Cinnongtabi" berasal dari nama kerajaan Petta Cinnongtabi (Lapatiroi) yang pernah berdiri di wilayah ini. Masyarakat desa sejak awal menggantungkan mata pencaharian pada sektor pertanian dan perdagangan, dengan nilai-nilai kebersamaan yang masih dijaga hingga kini.</p>
       </div>
       <div class="subsection">
         <h3>Sejarah Pemerintahan Desa</h3>
-        <div class="timeline">
+        <div class="timeline" id="timelineList">
           <div class="timeline__item">
             <h4>H. Andi Rustang Untung</h4>
             <p>Kepala Desa periode awal</p>
@@ -124,10 +122,10 @@
     <div id="tab-visimisi" class="tab-content fade-in">
       <div class="visi-box">
         <h3>Visi</h3>
-        <p>Penggerak keberdayaan masyarakat, kelembagaan dan pemerintahan desa berbasis sumber daya lokal menuju masyarakat pedesaan yang maju, mandiri, berdaya saing dan sejahtera.</p>
+        <p id="visiDesc">Penggerak keberdayaan masyarakat, kelembagaan dan pemerintahan desa berbasis sumber daya lokal menuju masyarakat pedesaan yang maju, mandiri, berdaya saing dan sejahtera.</p>
       </div>
       <h3 style="margin-bottom:16px">Misi</h3>
-      <ol class="misi-list">
+      <ol class="misi-list" id="misiList">
         <li>Memotivasi peningkatan kualitas hidup masyarakat desa.</li>
         <li>Memfasilitasi kemandirian dan partisipasi aktif masyarakat.</li>
         <li>Mendorong pemberdayaan dan pembangunan yang digerakkan oleh masyarakat sendiri.</li>
@@ -139,11 +137,13 @@
 
     <!-- TAB: Struktur Organisasi -->
     <div id="tab-struktur" class="tab-content fade-in">
-      <div class="org-placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="5" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="8.5" y="16" width="7" height="5" rx="1"/><path d="M6.5 8v3h11V8M12 11v5"/></svg>
-        <h3>Bagan Struktur Organisasi</h3>
-        <p>Bagan struktur organisasi pemerintahan Desa Cinnongtabi akan ditampilkan di sini.<br>
-        <small style="color:var(--gray-600)">(Silakan ganti placeholder ini dengan gambar bagan yang sebenarnya)</small></p>
+      <div id="strukturContainer">
+        <div class="org-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="5" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="8.5" y="16" width="7" height="5" rx="1"/><path d="M6.5 8v3h11V8M12 11v5"/></svg>
+          <h3>Bagan Struktur Organisasi</h3>
+          <p>Bagan struktur organisasi pemerintahan Desa Cinnongtabi akan ditampilkan di sini.<br>
+          <small style="color:var(--gray-600)">(Silakan upload gambar bagan di halaman Admin)</small></p>
+        </div>
       </div>
     </div>
 
@@ -151,16 +151,16 @@
     <div id="tab-geo" class="tab-content fade-in">
       <div class="subsection">
         <div class="stat-cards">
-          <div class="stat-card"><div class="stat-card__number">17,85</div><div class="stat-card__label">Km² Luas Wilayah</div></div>
-          <div class="stat-card"><div class="stat-card__number">1.216</div><div class="stat-card__label">Ha Tanah Sawah/Tegal</div></div>
-          <div class="stat-card"><div class="stat-card__number">569</div><div class="stat-card__label">Ha Tanah Kering</div></div>
+          <div class="stat-card"><div class="stat-card__number" id="statLuas">17,85</div><div class="stat-card__label">Km² Luas Wilayah</div></div>
+          <div class="stat-card"><div class="stat-card__number" id="statSawah">1.216</div><div class="stat-card__label">Ha Tanah Sawah/Tegal</div></div>
+          <div class="stat-card"><div class="stat-card__number" id="statKering">569</div><div class="stat-card__label">Ha Tanah Kering</div></div>
         </div>
         <h3>Batas Wilayah</h3>
         <div class="geo-grid" style="margin-top:16px">
-          <div class="geo-card"><div class="geo-card__direction">Utara</div><div class="geo-card__name">Kelurahan Paria</div></div>
-          <div class="geo-card"><div class="geo-card__direction">Selatan</div><div class="geo-card__name">Cinnongtabi / Tellulimpoe</div></div>
-          <div class="geo-card"><div class="geo-card__direction">Timur</div><div class="geo-card__name">Desa Tajo</div></div>
-          <div class="geo-card"><div class="geo-card__direction">Barat</div><div class="geo-card__name">Kelurahan Uraiyang</div></div>
+          <div class="geo-card"><div class="geo-card__direction">Utara</div><div class="geo-card__name" id="geoUtara">Kelurahan Paria</div></div>
+          <div class="geo-card"><div class="geo-card__direction">Selatan</div><div class="geo-card__name" id="geoSelatan">Cinnongtabi / Tellulimpoe</div></div>
+          <div class="geo-card"><div class="geo-card__direction">Timur</div><div class="geo-card__name" id="geoTimur">Desa Tajo</div></div>
+          <div class="geo-card"><div class="geo-card__direction">Barat</div><div class="geo-card__name" id="geoBarat">Kelurahan Uraiyang</div></div>
         </div>
       </div>
     </div>
@@ -169,15 +169,15 @@
     <div id="tab-data" class="tab-content fade-in">
       <div class="subsection">
         <div class="stat-cards">
-          <div class="stat-card"><div class="stat-card__number">2.477</div><div class="stat-card__label">Jiwa Total Penduduk</div></div>
-          <div class="stat-card"><div class="stat-card__number">1.383</div><div class="stat-card__label">Laki-laki</div></div>
-          <div class="stat-card"><div class="stat-card__number">1.094</div><div class="stat-card__label">Perempuan</div></div>
+          <div class="stat-card"><div class="stat-card__number" id="statTotalPenduduk">2.477</div><div class="stat-card__label">Jiwa Total Penduduk</div></div>
+          <div class="stat-card"><div class="stat-card__number" id="statLaki">1.383</div><div class="stat-card__label">Laki-laki</div></div>
+          <div class="stat-card"><div class="stat-card__number" id="statPerempuan">1.094</div><div class="stat-card__label">Perempuan</div></div>
         </div>
         <h3 style="margin-bottom:8px">Penduduk per Dusun</h3>
         <div class="table-wrapper" style="margin-bottom:32px">
           <table>
             <thead><tr><th>Dusun</th><th>Laki-laki</th><th>Perempuan</th><th>Total</th></tr></thead>
-            <tbody>
+            <tbody id="tableDusunBody">
               <tr><td>Kobbae</td><td>531</td><td>626</td><td>1.157</td></tr>
               <tr><td>Mellenge</td><td>852</td><td>468</td><td>1.320</td></tr>
             </tbody>
@@ -190,7 +190,7 @@
         <div class="table-wrapper" style="margin-bottom:32px">
           <table>
             <thead><tr><th>No</th><th>Lulusan Sekolah</th><th>Jiwa %</th></tr></thead>
-            <tbody>
+            <tbody id="tablePendidikanBody">
               <tr><td>1</td><td>SD atau yang Sederajat</td><td>118</td></tr>
               <tr><td>2</td><td>Madrasah Ibtidaiyah</td><td>-</td></tr>
               <tr><td>3</td><td>SLTP atau yang Sederajat</td><td>35</td></tr>
@@ -209,7 +209,7 @@
         <div class="table-wrapper" style="margin-bottom:32px">
           <table>
             <thead><tr><th>Jenis</th><th>Persentase</th></tr></thead>
-            <tbody>
+            <tbody id="tablePencaharianBody">
               <tr><td>Petani Pemilik Sawah</td><td>50%</td></tr>
               <tr><td>Petani Penggarap</td><td>30%</td></tr>
               <tr><td>Buruh Tani</td><td>10%</td></tr>
@@ -224,7 +224,7 @@
         <div class="table-wrapper" style="margin-bottom:32px">
           <table>
             <thead><tr><th>Jenis</th><th>Persentase</th></tr></thead>
-            <tbody>
+            <tbody id="tableTernakBody">
               <tr><td>Sapi</td><td>40%</td></tr>
               <tr><td>Kerbau</td><td>20%</td></tr>
               <tr><td>Ayam</td><td>20%</td></tr>
@@ -236,7 +236,7 @@
 
       <div class="subsection">
         <h3 style="margin-bottom:12px">Prasarana & Sarana Umum</h3>
-        <div class="badge-list">
+        <div class="badge-list" id="prasaranaBadgeList">
           <span class="badge">🏛️ Kantor Desa</span>
           <span class="badge">🏫 Sekolah Dasar</span>
           <span class="badge">🏫 SMP</span>
@@ -257,33 +257,31 @@
   <div class="container">
     <div class="section__header fade-in">
       <div class="accent-line"></div>
-      <h2>Potensi Desa</h2>
-      <p>Sektor unggulan yang menjadi tulang punggung perekonomian masyarakat Desa Cinnongtabi.</p>
+      <h2 id="potensiHeaderTitle">Potensi Desa</h2>
+      <p id="potensiHeaderDesc">Sektor unggulan yang menjadi tulang punggung perekonomian masyarakat Desa Cinnongtabi.</p>
     </div>
     <div class="potensi-grid">
       <div class="potensi-card fade-in">
         <div class="potensi-card__img">
-          <img src="dokumentasi/potensi_pertanian.png" alt="Potensi Pertanian Desa Cinnongtabi">
+          <img src="dokumentasi/potensi_pertanian.png" alt="Potensi Pertanian Desa Cinnongtabi" id="potensiTaniImg">
         </div>
         <div class="potensi-card__body">
-          <h3>Potensi Pertanian</h3>
-          <p>Pertanian merupakan sektor unggulan Desa Cinnongtabi dengan komoditas utama padi. Masyarakat secara turun-temurun mengelola lahan pertanian melalui semangat gotong royong, menjadikan desa ini salah satu penghasil pangan penting di Kecamatan Majauleng.</p>
+          <h3 id="potensiTaniTitle">Potensi Pertanian</h3>
+          <p id="potensiTaniDesc">Pertanian merupakan sektor unggulan Desa Cinnongtabi dengan komoditas utama padi. Masyarakat secara turun-temurun mengelola lahan pertanian melalui semangat gotong royong, menjadikan desa ini salah satu penghasil pangan penting di Kecamatan Majauleng.</p>
         </div>
       </div>
       <div class="potensi-card fade-in">
         <div class="potensi-card__img">
-          <img src="dokumentasi/potensi_peternakan.png" alt="Potensi Peternakan Desa Cinnongtabi">
+          <img src="dokumentasi/potensi_peternakan.png" alt="Potensi Peternakan Desa Cinnongtabi" id="potensiTernakImg">
         </div>
         <div class="potensi-card__body">
-          <h3>Potensi Peternakan</h3>
-          <p>Peternakan sapi merupakan tradisi turun-temurun masyarakat. Pakan ternak diperoleh dari limbah pertanian seperti jerami, sementara kotoran ternak diolah menjadi pupuk organik — menciptakan integrasi yang saling menguntungkan antara sektor pertanian dan peternakan.</p>
+          <h3 id="potensiTernakTitle">Potensi Peternakan</h3>
+          <p id="potensiTernakDesc">Peternakan sapi merupakan tradisi turun-temurun masyarakat. Pakan ternak diperoleh dari limbah pertanian seperti jerami, sementara kotoran ternak diolah menjadi pupuk organik — menciptakan integrasi yang saling menguntungkan antara sektor pertanian dan peternakan.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-
 
 <!-- GALERI -->
 <section id="galeri">
@@ -332,19 +330,19 @@
         <div class="contact-info">
           <div class="contact-item">
             <div class="contact-item__icon">📍</div>
-            <div><h4>Alamat</h4><p>Kantor Desa Cinnongtabi, Desa Cinnongtabi, Kec. Majauleng, Kab. Wajo, Sulawesi Selatan</p></div>
+            <div><h4>Alamat</h4><p id="kontakAlamat">Kantor Desa Cinnongtabi, Desa Cinnongtabi, Kec. Majauleng, Kab. Wajo, Sulawesi Selatan</p></div>
           </div>
           <div class="contact-item">
             <div class="contact-item__icon">📱</div>
-            <div><h4>WhatsApp</h4><a href="https://wa.me/6282343560094" target="_blank">0823-4356-0094</a></div>
+            <div><h4>WhatsApp</h4><a href="https://wa.me/6282343560094" target="_blank" id="kontakWA">0823-4356-0094</a></div>
           </div>
           <div class="contact-item">
             <div class="contact-item__icon">✉️</div>
-            <div><h4>Email</h4><a href="mailto:desacinnongtabi@gmail.com">desacinnongtabi@gmail.com</a></div>
+            <div><h4>Email</h4><a href="mailto:desacinnongtabi@gmail.com" id="kontakEmail">desacinnongtabi@gmail.com</a></div>
           </div>
           <div class="contact-item">
             <div class="contact-item__icon">🔢</div>
-            <div><h4>Kode Wilayah</h4><p>73.13.05.2006</p></div>
+            <div><h4>Kode Wilayah</h4><p id="kontakKode">73.13.05.2006</p></div>
           </div>
         </div>
       </div>
@@ -366,9 +364,9 @@
   <div class="container">
     <div class="footer__grid">
       <div>
-        <h4>Desa Cinnongtabi</h4>
-        <p style="margin-bottom:12px">Pusat informasi dan pelayanan digital Desa Cinnongtabi, Kecamatan Majauleng, Kabupaten Wajo, Sulawesi Selatan.</p>
-        <p style="font-size:.8rem">Kode Wilayah: 73.13.05.2006</p>
+        <h4 id="footerDesaName">Desa Cinnongtabi</h4>
+        <p style="margin-bottom:12px" id="footerDesaDesc">Pusat informasi dan pelayanan digital Desa Cinnongtabi, Kecamatan Majauleng, Kabupaten Wajo, Sulawesi Selatan.</p>
+        <p style="font-size:.8rem" id="footerKode">Kode Wilayah: 73.13.05.2006</p>
       </div>
       <div>
         <h4>Menu</h4>
@@ -376,7 +374,6 @@
           <li><a href="#beranda">Beranda</a></li>
           <li><a href="#tentang">Tentang</a></li>
           <li><a href="#potensi">Potensi Desa</a></li>
-
           <li><a href="#galeri">Galeri</a></li>
           <li><a href="#kontak">Kontak</a></li>
         </ul>
@@ -384,8 +381,8 @@
       <div>
         <h4>Kontak</h4>
         <ul class="footer__links">
-          <li><a href="https://wa.me/6282343560094" target="_blank">WhatsApp</a></li>
-          <li><a href="mailto:desacinnongtabi@gmail.com">Email</a></li>
+          <li><a href="https://wa.me/6282343560094" target="_blank" id="footerWA">WhatsApp</a></li>
+          <li><a href="mailto:desacinnongtabi@gmail.com" id="footerEmail">Email</a></li>
         </ul>
       </div>
     </div>

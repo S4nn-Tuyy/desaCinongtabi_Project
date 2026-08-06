@@ -3,199 +3,366 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin — Desa Cinnongtabi</title>
+  <title>Admin CMS — Desa Cinnongtabi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="dokumentasi/logo.png">
   <link rel="stylesheet" href="style.css">
   <style>
-    body { background: var(--gray-50); }
-    .admin-login, .admin-dash { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-    .admin-login { max-width: 400px; margin-top: 15vh; }
-    .admin-login .card { text-align: center; }
-    .admin-login h2 { margin-bottom: 8px; }
-    .admin-login p { color: var(--gray-600); font-size: .9rem; margin-bottom: 24px; }
-    .admin-login .form-group { text-align: left; }
-    .hidden { display: none !important; }
-    .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
-    .admin-header h1 { font-size: 1.6rem; }
-    .admin-section { margin-bottom: 32px; }
-    .admin-section .card { margin-bottom: 0; }
-    .admin-section h3 { margin-bottom: 16px; color: var(--green-800); }
+    body { background: #f4f6f8; font-family: 'Inter', sans-serif; }
+    .admin-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .login-card { background: #fff; border-radius: 16px; padding: 40px; width: 100%; max-width: 400px; box-shadow: var(--shadow-lg); text-align: center; }
+    .login-card img { width: 64px; height: 64px; margin-bottom: 16px; object-fit: contain; }
+    .login-card h2 { font-family: 'Poppins', sans-serif; font-size: 1.4rem; color: var(--green-900); margin-bottom: 6px; }
+    .login-card p { color: var(--gray-600); font-size: .85rem; margin-bottom: 24px; }
+    .admin-bar { background: #fff; border-bottom: 1px solid var(--gray-200); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; sticky: top; top: 0; z-index: 100; box-shadow: var(--shadow-sm); }
+    .admin-bar__brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--green-900); text-decoration: none; font-size: .95rem; }
+    .admin-bar__brand img { width: 28px; height: 28px; object-fit: contain; }
+    .admin-dash { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px; }
+    .admin-section { margin-bottom: 28px; }
+    .admin-section h3 { font-size: 1.1rem; font-family: 'Poppins', sans-serif; color: var(--green-900); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+    .card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); }
     .form-group { margin-bottom: 16px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media(max-width:600px) { .form-row { grid-template-columns: 1fr; } }
-    .btn--sm { padding: 10px 20px; font-size: .85rem; }
-    .btn--danger { background: #e53935; color: #fff; }
-    .btn--danger:hover { background: #c62828; }
-    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--green-800); color: #fff; padding: 14px 24px; border-radius: var(--radius-sm); font-size: .9rem; box-shadow: var(--shadow-lg); transform: translateY(100px); opacity: 0; transition: all .3s ease; z-index: 9999; }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .gallery-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 16px; }
-    .gallery-admin-item { position: relative; aspect-ratio: 4/3; border-radius: var(--radius-sm); overflow: hidden; border: 1px solid var(--gray-200); background: var(--gray-100); }
+    .form-group label { display: block; font-weight: 600; font-size: .85rem; color: var(--gray-700); margin-bottom: 6px; }
+    .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: .9rem; font-family: inherit; transition: border-color .2s; }
+    .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--green-600); box-shadow: 0 0 0 3px rgba(46,125,50,.1); }
+    .form-group small { display: block; font-size: .75rem; color: var(--gray-600); margin-top: 4px; }
+    .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .content-area { min-height: 90px; resize: vertical; }
+    .img-preview-box { display: flex; align-items: center; gap: 16px; margin-top: 8px; padding: 12px; background: var(--gray-100); border-radius: 8px; }
+    .img-preview-box img { width: 70px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid var(--gray-300); }
+    .gallery-admin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-bottom: 16px; }
+    .gallery-admin-item { position: relative; border-radius: 8px; overflow: hidden; height: 100px; border: 1px solid var(--gray-300); }
     .gallery-admin-item img { width: 100%; height: 100%; object-fit: cover; }
-    .gallery-admin-item .remove-btn { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,.6); color: #fff; border: none; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; }
-    .gallery-admin-item .remove-btn:hover { background: #e53935; }
-    .nav-admin { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 16px 0; margin-bottom: 0; }
-    .nav-admin .container { display: flex; align-items: center; justify-content: space-between; }
-    .nav-admin a { color: var(--green-800); font-weight: 600; font-family: 'Poppins', sans-serif; }
-    textarea.content-area { min-height: 100px; }
-    .dropzone {
-      border: 2px dashed var(--gray-300); border-radius: var(--radius); padding: 40px 20px;
-      text-align: center; cursor: pointer; transition: all .3s ease;
-      background: var(--gray-50); margin-bottom: 16px;
-    }
-    .dropzone:hover, .dropzone.dragover {
-      border-color: var(--green-500); background: var(--green-50);
-    }
-    .dropzone__icon { font-size: 2.5rem; margin-bottom: 8px; opacity: .5; }
-    .dropzone__text { color: var(--gray-600); font-size: .9rem; }
-    .dropzone__text strong { color: var(--green-700); }
+    .gallery-admin-item .remove-btn { position: absolute; top: 4px; right: 4px; background: rgba(220,53,69,.85); color: #fff; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; }
+    .gallery-admin-item .remove-btn:hover { background: #dc3545; }
+    .dropzone { border: 2px dashed var(--green-600); border-radius: 12px; padding: 24px 16px; text-align: center; background: rgba(46,125,50,.02); cursor: pointer; transition: all .2s; margin-bottom: 16px; }
+    .dropzone:hover, .dropzone.dragover { background: rgba(46,125,50,.08); border-color: var(--green-700); }
+    .dropzone__icon { font-size: 1.8rem; margin-bottom: 4px; }
+    .dropzone__text { font-size: .85rem; color: var(--gray-700); }
     .dropzone input[type="file"] { display: none; }
+    .toast { position: fixed; bottom: 24px; right: 24px; background: var(--green-900); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: .9rem; box-shadow: var(--shadow-lg); transform: translateY(100px); opacity: 0; transition: all .3s; z-index: 1000; }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .hidden { display: none !important; }
+    .quick-nav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 20px; }
+    .quick-nav a { padding: 6px 14px; background: #fff; border: 1px solid var(--gray-300); border-radius: 20px; font-size: .8rem; color: var(--gray-700); text-decoration: none; white-space: nowrap; transition: all .2s; }
+    .quick-nav a:hover { background: var(--green-600); color: #fff; border-color: var(--green-600); }
   </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="loginPage" class="admin-login">
-  <div class="card">
-    <h2>🔐 Admin Panel</h2>
-    <p>Desa Cinnongtabi — Sistem Manajemen Konten</p>
+<!-- LOGIN PAGE -->
+<div class="admin-login" id="loginPage">
+  <div class="login-card">
+    <img src="dokumentasi/logo.png" alt="Logo Desa">
+    <h2>Admin Desa Cinnongtabi</h2>
+    <p>Masuk untuk mengelola seluruh konten website</p>
     <form id="loginForm">
-      <div class="form-group">
-        <label for="loginUser">Username</label>
-        <input type="text" id="loginUser" placeholder="admin" required>
+      <div class="form-group" style="text-align:left">
+        <label>Username</label>
+        <input type="text" id="loginUser" required placeholder="admin">
       </div>
-      <div class="form-group">
-        <label for="loginPass">Password</label>
-        <input type="password" id="loginPass" placeholder="••••••••" required>
+      <div class="form-group" style="text-align:left">
+        <label>Password</label>
+        <input type="password" id="loginPass" required placeholder="••••••••">
       </div>
-      <button type="submit" class="btn btn--green" style="width:100%;justify-content:center;margin-top:8px">Masuk</button>
-      <p id="loginError" style="color:#e53935;margin-top:12px;font-size:.85rem" class="hidden">Username atau password salah!</p>
+      <button type="submit" class="btn btn--green" style="width:100%;margin-top:8px">Masuk</button>
     </form>
+    <div id="loginError" class="hidden" style="color:#dc3545;font-size:.8rem;margin-top:12px">Username atau password salah!</div>
+    <div style="margin-top:16px"><a href="index.html" style="color:var(--gray-600);font-size:.8rem;text-decoration:none">← Kembali ke Website</a></div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="dashPage" class="hidden">
-  <div class="nav-admin">
-    <div class="container">
-      <a href="index.html" target="_blank">← Lihat Website</a>
+<!-- DASHBOARD PAGE -->
+<div class="hidden" id="dashPage">
+  <div class="admin-bar">
+    <a href="index.html" class="admin-bar__brand">
+      <img src="dokumentasi/logo.png" alt="Logo">
+      <span>Admin CMS — Desa Cinnongtabi</span>
+    </a>
+    <div style="display:flex;gap:10px;align-items:center">
+      <a href="index.html" target="_blank" class="btn btn--outline btn--sm">← Lihat Website</a>
       <button class="btn btn--outline btn--sm" style="color:var(--gray-700);border-color:var(--gray-300)" onclick="logout()">Logout</button>
     </div>
   </div>
+
   <div class="admin-dash">
     <div class="admin-header">
       <div>
-        <h1>Dashboard Admin</h1>
-        <p style="color:var(--gray-600);font-size:.9rem">Kelola konten website Desa Cinnongtabi</p>
+        <h1>Dashboard Admin CMS</h1>
+        <p style="color:var(--gray-600);font-size:.9rem">Kelola seluruh teks, gambar, dan data di website Desa Cinnongtabi</p>
       </div>
-      <button class="btn btn--green btn--sm" onclick="saveAll()">💾 Simpan Semua</button>
+      <button class="btn btn--green" onclick="saveAll()">💾 Simpan Semua Perubahan</button>
     </div>
 
-    <!-- HERO -->
-    <div class="admin-section">
+    <!-- Quick Navigation -->
+    <div class="quick-nav">
+      <a href="#sec-brand">🏷️ Identitas</a>
+      <a href="#sec-hero">🏠 Hero</a>
+      <a href="#sec-ringkasan">📌 Ringkasan Cards</a>
+      <a href="#sec-sejarah">📜 Sejarah</a>
+      <a href="#sec-visimisi">🎯 Visi Misi</a>
+      <a href="#sec-struktur">🏢 Struktur</a>
+      <a href="#sec-geo">🗺️ Geografi</a>
+      <a href="#sec-data">📊 Data Penduduk</a>
+      <a href="#sec-potensi">🌾 Potensi</a>
+      <a href="#sec-galeri">📷 Galeri</a>
+      <a href="#sec-kontak">📞 Kontak</a>
+    </div>
+
+    <!-- 1. IDENTITAS DESA -->
+    <div class="admin-section" id="sec-brand">
       <div class="card">
-        <h3>🏠 Hero / Beranda</h3>
+        <h3>🏷️ Identitas & Branding Desa</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nama Desa</label>
+            <input type="text" id="namaDesa" placeholder="Desa Cinnongtabi">
+          </div>
+          <div class="form-group">
+            <label>Logo Desa (Upload file)</label>
+            <input type="file" id="logoFileInput" accept="image/*" onchange="previewImage('logoFileInput', 'logoPreview')">
+            <div class="img-preview-box">
+              <img id="logoPreview" src="dokumentasi/logo.png" alt="Preview Logo">
+              <small>Format PNG/JPG disarankan</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. HERO -->
+    <div class="admin-section" id="sec-hero">
+      <div class="card">
+        <h3>🏠 Hero / Beranda Utama</h3>
         <div class="form-group">
-          <label>Tagline Utama</label>
+          <label>Sub-header Badge</label>
+          <input type="text" id="heroBadge" placeholder="🏡 Kecamatan Majauleng, Kabupaten Wajo">
+        </div>
+        <div class="form-group">
+          <label>Tagline Utama (Judul H1)</label>
           <input type="text" id="heroTitle" placeholder="Selamat Datang di Desa Cinnongtabi">
         </div>
         <div class="form-group">
-          <label>Sub-judul</label>
-          <textarea id="heroSubtitle" class="content-area" placeholder="Deskripsi singkat..."></textarea>
+          <label>Sub-judul Hero</label>
+          <textarea id="heroSubtitle" class="content-area" placeholder="Deskripsi singkat hero..."></textarea>
         </div>
       </div>
     </div>
 
-    <!-- SEJARAH -->
-    <div class="admin-section">
+    <!-- 3. RINGKASAN CARDS -->
+    <div class="admin-section" id="sec-ringkasan">
       <div class="card">
-        <h3>📜 Sejarah Desa</h3>
+        <h3>📌 Kartu Ringkasan (Mengenal Desa)</h3>
+        <div class="form-row" style="margin-bottom:16px">
+          <div class="form-group">
+            <label>Judul Section Ringkasan</label>
+            <input type="text" id="ringkasanTitle" placeholder="Mengenal Desa Cinnongtabi">
+          </div>
+          <div class="form-group">
+            <label>Deskripsi Sub-header Ringkasan</label>
+            <input type="text" id="ringkasanDesc" placeholder="Desa yang dikenal dengan lingkungan asri...">
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-top:16px">
+          <h4>Card 1 (Letak Geografis)</h4>
+          <div class="form-row">
+            <div class="form-group"><label>Judul Card 1</label><input type="text" id="card1Title"></div>
+            <div class="form-group"><label>Gambar Card 1</label><input type="file" id="card1FileInput" accept="image/*" onchange="previewImage('card1FileInput', 'card1Preview')"></div>
+          </div>
+          <div class="form-group"><label>Deskripsi Card 1</label><textarea id="card1Desc" class="content-area" rows="2"></textarea></div>
+          <div class="img-preview-box" style="margin-bottom:16px"><img id="card1Preview" src="dokumentasi/card_geografis.png" alt="Card 1"><small>Preview Gambar Card 1</small></div>
+        </div>
+
+        <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-top:16px">
+          <h4>Card 2 (Potensi Pertanian)</h4>
+          <div class="form-row">
+            <div class="form-group"><label>Judul Card 2</label><input type="text" id="card2Title"></div>
+            <div class="form-group"><label>Gambar Card 2</label><input type="file" id="card2FileInput" accept="image/*" onchange="previewImage('card2FileInput', 'card2Preview')"></div>
+          </div>
+          <div class="form-group"><label>Deskripsi Card 2</label><textarea id="card2Desc" class="content-area" rows="2"></textarea></div>
+          <div class="img-preview-box" style="margin-bottom:16px"><img id="card2Preview" src="dokumentasi/card_pertanian.png" alt="Card 2"><small>Preview Gambar Card 2</small></div>
+        </div>
+
+        <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-top:16px">
+          <h4>Card 3 (Potensi Peternakan)</h4>
+          <div class="form-row">
+            <div class="form-group"><label>Judul Card 3</label><input type="text" id="card3Title"></div>
+            <div class="form-group"><label>Gambar Card 3</label><input type="file" id="card3FileInput" accept="image/*" onchange="previewImage('card3FileInput', 'card3Preview')"></div>
+          </div>
+          <div class="form-group"><label>Deskripsi Card 3</label><textarea id="card3Desc" class="content-area" rows="2"></textarea></div>
+          <div class="img-preview-box"><img id="card3Preview" src="dokumentasi/card_peternakan.png" alt="Card 3"><small>Preview Gambar Card 3</small></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. SEJARAH & PEMERINTAHAN -->
+    <div class="admin-section" id="sec-sejarah">
+      <div class="card">
+        <h3>📜 Sejarah & Riwayat Pemerintahan</h3>
         <div class="form-group">
-          <label>Konten Sejarah</label>
+          <label>Teks Sejarah Desa</label>
           <textarea id="sejarahContent" class="content-area" rows="5"></textarea>
         </div>
+        <div class="form-group">
+          <label>Riwayat Pemerintahan Desa (Format: Nama Kepala Desa | Periode / Keterangan)</label>
+          <textarea id="pemerintahanInput" class="content-area" rows="5" placeholder="H. Andi Rustang Untung | Kepala Desa periode awal&#10;H. Andi Tune — Periode I | Tahun 2009 – 2015"></textarea>
+          <small>Tulis satu entri per baris dipisahkan dengan tanda pagar tegak (|)</small>
+        </div>
       </div>
     </div>
 
-    <!-- VISI MISI -->
-    <div class="admin-section">
+    <!-- 5. VISI & MISI -->
+    <div class="admin-section" id="sec-visimisi">
       <div class="card">
-        <h3>🎯 Visi & Misi</h3>
+        <h3>🎯 Visi & Misi Desa</h3>
         <div class="form-group">
-          <label>Visi</label>
+          <label>Visi Desa</label>
           <textarea id="visiContent" class="content-area" rows="3"></textarea>
         </div>
         <div class="form-group">
-          <label>Misi (satu per baris)</label>
+          <label>Misi Desa (Satu poin per baris)</label>
           <textarea id="misiContent" class="content-area" rows="6" placeholder="Misi 1&#10;Misi 2&#10;Misi 3"></textarea>
         </div>
       </div>
     </div>
 
-    <!-- POTENSI -->
-    <div class="admin-section">
+    <!-- 6. STRUKTUR ORGANISASI -->
+    <div class="admin-section" id="sec-struktur">
       <div class="card">
-        <h3>🌾 Potensi Desa</h3>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Potensi Pertanian</label>
-            <textarea id="potensiTani" class="content-area" rows="4"></textarea>
-          </div>
-          <div class="form-group">
-            <label>Potensi Peternakan</label>
-            <textarea id="potensiTernak" class="content-area" rows="4"></textarea>
+        <h3>🏢 Bagan Struktur Organisasi</h3>
+        <div class="form-group">
+          <label>Upload Gambar Bagan Struktur Organisasi</label>
+          <input type="file" id="strukturFileInput" accept="image/*" onchange="previewImage('strukturFileInput', 'strukturPreview')">
+          <div class="img-preview-box">
+            <img id="strukturPreview" src="dokumentasi/logo.png" alt="Preview Struktur">
+            <small>Pilih file gambar bagan organisasi untuk ditampilkan pada website</small>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- KONTAK -->
-    <div class="admin-section">
+    <!-- 7. GEOGRAFI -->
+    <div class="admin-section" id="sec-geo">
       <div class="card">
-        <h3>📞 Kontak</h3>
+        <h3>🗺️ Geografi & Batas Wilayah</h3>
         <div class="form-row">
-          <div class="form-group">
-            <label>Alamat</label>
-            <input type="text" id="kontakAlamat">
-          </div>
-          <div class="form-group">
-            <label>No. WhatsApp</label>
-            <input type="text" id="kontakWA" placeholder="6282343560094">
-          </div>
+          <div class="form-group"><label>Luas Wilayah (Km²)</label><input type="text" id="geoLuas" placeholder="17,85"></div>
+          <div class="form-group"><label>Tanah Sawah / Tegal (Ha)</label><input type="text" id="geoSawah" placeholder="1.216"></div>
+          <div class="form-group"><label>Tanah Kering (Ha)</label><input type="text" id="geoKering" placeholder="569"></div>
         </div>
+        <h4 style="margin-top:12px;margin-bottom:8px">Batas Wilayah</h4>
         <div class="form-row">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="kontakEmail">
-          </div>
-          <div class="form-group">
-            <label>Kode Wilayah</label>
-            <input type="text" id="kontakKode">
-          </div>
+          <div class="form-group"><label>Batas Utara</label><input type="text" id="geoUtara" placeholder="Kelurahan Paria"></div>
+          <div class="form-group"><label>Batas Selatan</label><input type="text" id="geoSelatan" placeholder="Cinnongtabi / Tellulimpoe"></div>
+          <div class="form-group"><label>Batas Timur</label><input type="text" id="geoTimur" placeholder="Desa Tajo"></div>
+          <div class="form-group"><label>Batas Barat</label><input type="text" id="geoBarat" placeholder="Kelurahan Uraiyang"></div>
         </div>
       </div>
     </div>
 
-    <!-- GALERI -->
-    <div class="admin-section">
+    <!-- 8. DATA KEPENDUDUKAN -->
+    <div class="admin-section" id="sec-data">
       <div class="card">
-        <h3>📷 Galeri</h3>
+        <h3>📊 Data Kependudukan</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Total Penduduk (Jiwa)</label><input type="text" id="pendudukTotal" placeholder="2.477"></div>
+          <div class="form-group"><label>Jumlah Laki-laki</label><input type="text" id="pendudukLaki" placeholder="1.383"></div>
+          <div class="form-group"><label>Jumlah Perempuan</label><input type="text" id="pendudukPerempuan" placeholder="1.094"></div>
+        </div>
+        <div class="form-group">
+          <label>Penduduk per Dusun (Format: Nama Dusun | Laki-laki | Perempuan | Total)</label>
+          <textarea id="dusunInput" class="content-area" rows="3" placeholder="Kobbae | 531 | 626 | 1.157&#10;Mellenge | 852 | 468 | 1.320"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Tingkat Pendidikan (Format: Tingkat Sekolah : Jumlah Jiwa)</label>
+          <textarea id="pendidikanInput" class="content-area" rows="5" placeholder="SD atau yang Sederajat : 118&#10;SMU / SMK : 20"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Mata Pencaharian (Format: Jenis Pekerjaan : Persentase)</label>
+          <textarea id="pencaharianInput" class="content-area" rows="4" placeholder="Petani Pemilik Sawah : 50%&#10;Petani Penggarap : 30%"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Kepemilikan Ternak (Format: Jenis Ternak : Persentase)</label>
+          <textarea id="ternakInput" class="content-area" rows="4" placeholder="Sapi : 40%&#10;Kerbau : 20%"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Prasarana & Sarana Umum (Satu item per baris)</label>
+          <textarea id="prasaranaInput" class="content-area" rows="5" placeholder="🏛️ Kantor Desa&#10;🏫 Sekolah Dasar"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9. POTENSI DESA -->
+    <div class="admin-section" id="sec-potensi">
+      <div class="card">
+        <h3>🌾 Potensi Desa (Detail)</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Judul Utama Section</label><input type="text" id="potensiTitle" placeholder="Potensi Desa"></div>
+          <div class="form-group"><label>Sub-judul Section</label><input type="text" id="potensiSub" placeholder="Sektor unggulan yang menjadi tulang punggung..."></div>
+        </div>
+
+        <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-top:12px">
+          <h4>Potensi Pertanian</h4>
+          <div class="form-row">
+            <div class="form-group"><label>Judul Sub-potensi 1</label><input type="text" id="potensiTaniTitle" placeholder="Potensi Pertanian"></div>
+            <div class="form-group"><label>Gambar Pertanian</label><input type="file" id="taniFileInput" accept="image/*" onchange="previewImage('taniFileInput', 'taniPreview')"></div>
+          </div>
+          <div class="form-group"><label>Deskripsi Pertanian</label><textarea id="potensiTani" class="content-area" rows="4"></textarea></div>
+          <div class="img-preview-box" style="margin-bottom:16px"><img id="taniPreview" src="dokumentasi/potensi_pertanian.png" alt="Preview Pertanian"><small>Preview Gambar Pertanian</small></div>
+        </div>
+
+        <div style="border-top:1px solid var(--gray-200);padding-top:16px;margin-top:12px">
+          <h4>Potensi Peternakan</h4>
+          <div class="form-row">
+            <div class="form-group"><label>Judul Sub-potensi 2</label><input type="text" id="potensiTernakTitle" placeholder="Potensi Peternakan"></div>
+            <div class="form-group"><label>Gambar Peternakan</label><input type="file" id="ternakFileInput" accept="image/*" onchange="previewImage('ternakFileInput', 'ternakPreview')"></div>
+          </div>
+          <div class="form-group"><label>Deskripsi Peternakan</label><textarea id="potensiTernak" class="content-area" rows="4"></textarea></div>
+          <div class="img-preview-box"><img id="ternakPreview" src="dokumentasi/potensi_peternakan.png" alt="Preview Peternakan"><small>Preview Gambar Peternakan</small></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10. GALERI -->
+    <div class="admin-section" id="sec-galeri">
+      <div class="card">
+        <h3>📷 Galeri Desa</h3>
         <div class="gallery-admin-grid" id="galleryGrid"></div>
         <div class="dropzone" id="dropzone">
           <div class="dropzone__icon">📁</div>
-          <div class="dropzone__text">Drag & drop gambar di sini, atau <strong>klik untuk pilih file</strong></div>
+          <div class="dropzone__text">Drag & drop foto galeri di sini, atau <strong>klik untuk pilih file</strong></div>
           <input type="file" id="fileInput" accept="image/*" multiple>
         </div>
         <div class="form-group">
-          <label>Keterangan (opsional)</label>
-          <input type="text" id="newGalleryAlt" placeholder="Deskripsi gambar">
+          <label>Keterangan Foto Baru (opsional)</label>
+          <input type="text" id="newGalleryAlt" placeholder="Deskripsi foto">
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. KONTAK -->
+    <div class="admin-section" id="sec-kontak">
+      <div class="card">
+        <h3>📞 Kontak & Informasi Footer</h3>
+        <div class="form-row">
+          <div class="form-group"><label>Alamat Lengkap</label><input type="text" id="kontakAlamat"></div>
+          <div class="form-group"><label>No. WhatsApp (Awali 62, contoh: 6282343560094)</label><input type="text" id="kontakWA"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Email Resmi Desa</label><input type="email" id="kontakEmail"></div>
+          <div class="form-group"><label>Kode Wilayah Desa</label><input type="text" id="kontakKode"></div>
         </div>
       </div>
     </div>
 
     <!-- RESET -->
     <div class="admin-section" style="text-align:center;padding:20px 0">
-      <button class="btn btn--danger btn--sm" onclick="resetAll()">🗑️ Reset ke Default</button>
-      <p style="color:var(--gray-600);font-size:.8rem;margin-top:8px">Menghapus semua perubahan dan kembali ke konten awal</p>
+      <button class="btn btn--danger btn--sm" onclick="resetAll()">🗑️ Reset Semua ke Default</button>
+      <p style="color:var(--gray-600);font-size:.8rem;margin-top:8px">Menghapus semua penyesuaian CMS dan kembali ke isi awal bawaan website</p>
     </div>
   </div>
 </div>
@@ -203,24 +370,76 @@
 <div class="toast" id="toast">Tersimpan!</div>
 
 <script>
-// ponytail: localStorage-only CMS — no backend, data lives in browser only
 const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'desa2026';
 const STORAGE_KEY = 'cinnongtabi_cms';
 
-// Default content (mirrors index.html)
+// Full Defaults mirroring index.html
 const DEFAULTS = {
+  logoUrl: 'dokumentasi/logo.png',
+  namaDesa: 'Desa Cinnongtabi',
+  heroBadge: '🏡 Kecamatan Majauleng, Kabupaten Wajo',
   heroTitle: 'Selamat Datang di Desa Cinnongtabi',
   heroSubtitle: 'Pusat informasi dan pelayanan digital desa — menyediakan informasi secara cepat, akurat, dan transparan kepada masyarakat.',
+
+  ringkasanTitle: 'Mengenal Desa Cinnongtabi',
+  ringkasanDesc: 'Desa yang dikenal dengan lingkungan asri, hamparan lahan pertanian, dan nilai kebersamaan serta gotong royong yang kental.',
+  card1Title: 'Letak Geografis',
+  card1Desc: 'Terletak di Kecamatan Majauleng, Kabupaten Wajo, Sulawesi Selatan dengan luas wilayah ± 17,85 Km².',
+  card1Img: 'dokumentasi/card_geografis.png',
+  card2Title: 'Potensi Pertanian',
+  card2Desc: 'Sektor unggulan dengan komoditas utama padi dan pengelolaan lahan secara gotong royong.',
+  card2Img: 'dokumentasi/card_pertanian.png',
+  card3Title: 'Potensi Peternakan',
+  card3Desc: 'Peternakan sapi turun-temurun dengan integrasi pakan dari limbah pertanian.',
+  card3Img: 'dokumentasi/card_peternakan.png',
+
   sejarahContent: 'Nama "Cinnongtabi" berasal dari nama kerajaan Petta Cinnongtabi (Lapatiroi) yang pernah berdiri di wilayah ini. Masyarakat desa sejak awal menggantungkan mata pencaharian pada sektor pertanian dan perdagangan, dengan nilai-nilai kebersamaan yang masih dijaga hingga kini.',
+  pemerintahanList: [
+    { nama: 'H. Andi Rustang Untung', periode: 'Kepala Desa periode awal' },
+    { nama: 'H. Andi Tune — Periode I', periode: 'Tahun 2009 – 2015' },
+    { nama: 'H. Andi Tune — Periode II', periode: 'Tahun 2015 – 2021' },
+    { nama: 'H. Andi Tune — Periode III', periode: 'Tahun 2021 – Sekarang' }
+  ],
+
   visiContent: 'Penggerak keberdayaan masyarakat, kelembagaan dan pemerintahan desa berbasis sumber daya lokal menuju masyarakat pedesaan yang maju, mandiri, berdaya saing dan sejahtera.',
   misiContent: 'Memotivasi peningkatan kualitas hidup masyarakat desa.\nMemfasilitasi kemandirian dan partisipasi aktif masyarakat.\nMendorong pemberdayaan dan pembangunan yang digerakkan oleh masyarakat sendiri.\nMelaksanakan pembangunan di segala bidang secara berkelanjutan.\nMenciptakan tata lingkungan desa yang sejuk, bersih, aman, indah, dan sehat.\nMewujudkan tata pemerintahan yang transparan, partisipatif, dan akuntabel.',
+
+  strukturImg: '',
+  geoLuas: '17,85',
+  geoSawah: '1.216',
+  geoKering: '569',
+  geoUtara: 'Kelurahan Paria',
+  geoSelatan: 'Cinnongtabi / Tellulimpoe',
+  geoTimur: 'Desa Tajo',
+  geoBarat: 'Kelurahan Uraiyang',
+
+  pendudukTotal: '2.477',
+  pendudukLaki: '1.383',
+  pendudukPerempuan: '1.094',
+  dusunList: [
+    { nama: 'Kobbae', laki: '531', perempuan: '626', total: '1.157' },
+    { nama: 'Mellenge', laki: '852', perempuan: '468', total: '1.320' }
+  ],
+  pendidikanList: 'SD atau yang Sederajat : 118\nMadrasah Ibtidaiyah : -\nSLTP atau yang Sederajat : 35\nMadrasah Tsanawiyah : -\nSMU / SMK : 20\nMadrasah Aliyah : -\nAkademi / Diploma : 5\nSarjana Perguruan Tinggi : 15',
+  pencaharianList: 'Petani Pemilik Sawah : 50%\nPetani Penggarap : 30%\nBuruh Tani : 10%\nLainnya : 10%',
+  ternakList: 'Sapi : 40%\nKerbau : 20%\nAyam : 20%\nLainnya : 20%',
+  prasaranaList: '🏛️ Kantor Desa\n🏫 Sekolah Dasar\n🏫 SMP\n👶 KB\n🛣️ Jalan Desa ±3.500 km\n🕌 Masjid\n🌉 Jembatan\n🏥 Posyandu\n⚽ Lapangan',
+
+  potensiTitle: 'Potensi Desa',
+  potensiSub: 'Sektor unggulan yang menjadi tulang punggung perekonomian masyarakat Desa Cinnongtabi.',
+  potensiTaniTitle: 'Potensi Pertanian',
   potensiTani: 'Pertanian merupakan sektor unggulan Desa Cinnongtabi dengan komoditas utama padi. Masyarakat secara turun-temurun mengelola lahan pertanian melalui semangat gotong royong, menjadikan desa ini salah satu penghasil pangan penting di Kecamatan Majauleng.',
+  potensiTaniImg: 'dokumentasi/potensi_pertanian.png',
+  potensiTernakTitle: 'Potensi Peternakan',
   potensiTernak: 'Peternakan sapi merupakan tradisi turun-temurun masyarakat. Pakan ternak diperoleh dari limbah pertanian seperti jerami, sementara kotoran ternak diolah menjadi pupuk organik — menciptakan integrasi yang saling menguntungkan antara sektor pertanian dan peternakan.',
+  potensiTernakImg: 'dokumentasi/potensi_peternakan.png',
+
   kontakAlamat: 'Kantor Desa Cinnongtabi, Desa Cinnongtabi, Kec. Majauleng, Kab. Wajo, Sulawesi Selatan',
   kontakWA: '6282343560094',
   kontakEmail: 'desacinnongtabi@gmail.com',
   kontakKode: '73.13.05.2006',
+
   gallery: [
     { src: 'dokumentasi/dokumentasi 1.jpeg', alt: 'Rapat Koordinasi Desa' },
     { src: 'dokumentasi/dokumentasi 2.jpeg', alt: 'Kegiatan Penanaman KKN' },
@@ -233,8 +452,8 @@ const DEFAULTS = {
 };
 
 function getData() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { ...DEFAULTS }; }
-  catch { return { ...DEFAULTS }; }
+  try { return Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}); }
+  catch { return Object.assign({}, DEFAULTS); }
 }
 
 function showToast(msg) {
@@ -268,20 +487,112 @@ function logout() {
   location.reload();
 }
 
-// LOAD
+// Image upload preview & compressed base64 converter
+const imageStore = {};
+function previewImage(inputId, previewId) {
+  const file = document.getElementById(inputId).files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      const maxDim = 1000;
+      if (w > maxDim || h > maxDim) {
+        if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+        else { w = Math.round((w * maxDim) / h); h = maxDim; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      document.getElementById(previewId).src = dataUrl;
+      imageStore[inputId] = dataUrl;
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// LOAD FORM
 function loadForm() {
   const d = getData();
+  
+  document.getElementById('namaDesa').value = d.namaDesa || DEFAULTS.namaDesa;
+  if (d.logoUrl) document.getElementById('logoPreview').src = d.logoUrl;
+
+  document.getElementById('heroBadge').value = d.heroBadge || DEFAULTS.heroBadge;
   document.getElementById('heroTitle').value = d.heroTitle || DEFAULTS.heroTitle;
   document.getElementById('heroSubtitle').value = d.heroSubtitle || DEFAULTS.heroSubtitle;
+
+  document.getElementById('ringkasanTitle').value = d.ringkasanTitle || DEFAULTS.ringkasanTitle;
+  document.getElementById('ringkasanDesc').value = d.ringkasanDesc || DEFAULTS.ringkasanDesc;
+
+  document.getElementById('card1Title').value = d.card1Title || DEFAULTS.card1Title;
+  document.getElementById('card1Desc').value = d.card1Desc || DEFAULTS.card1Desc;
+  if (d.card1Img) document.getElementById('card1Preview').src = d.card1Img;
+
+  document.getElementById('card2Title').value = d.card2Title || DEFAULTS.card2Title;
+  document.getElementById('card2Desc').value = d.card2Desc || DEFAULTS.card2Desc;
+  if (d.card2Img) document.getElementById('card2Preview').src = d.card2Img;
+
+  document.getElementById('card3Title').value = d.card3Title || DEFAULTS.card3Title;
+  document.getElementById('card3Desc').value = d.card3Desc || DEFAULTS.card3Desc;
+  if (d.card3Img) document.getElementById('card3Preview').src = d.card3Img;
+
   document.getElementById('sejarahContent').value = d.sejarahContent || DEFAULTS.sejarahContent;
+  
+  if (d.pemerintahanList && d.pemerintahanList.length) {
+    document.getElementById('pemerintahanInput').value = d.pemerintahanList.map(item => `${item.nama} | ${item.periode}`).join('\n');
+  } else {
+    document.getElementById('pemerintahanInput').value = DEFAULTS.pemerintahanList.map(item => `${item.nama} | ${item.periode}`).join('\n');
+  }
+
   document.getElementById('visiContent').value = d.visiContent || DEFAULTS.visiContent;
   document.getElementById('misiContent').value = d.misiContent || DEFAULTS.misiContent;
+
+  if (d.strukturImg) document.getElementById('strukturPreview').src = d.strukturImg;
+
+  document.getElementById('geoLuas').value = d.geoLuas || DEFAULTS.geoLuas;
+  document.getElementById('geoSawah').value = d.geoSawah || DEFAULTS.geoSawah;
+  document.getElementById('geoKering').value = d.geoKering || DEFAULTS.geoKering;
+  document.getElementById('geoUtara').value = d.geoUtara || DEFAULTS.geoUtara;
+  document.getElementById('geoSelatan').value = d.geoSelatan || DEFAULTS.geoSelatan;
+  document.getElementById('geoTimur').value = d.geoTimur || DEFAULTS.geoTimur;
+  document.getElementById('geoBarat').value = d.geoBarat || DEFAULTS.geoBarat;
+
+  document.getElementById('pendudukTotal').value = d.pendudukTotal || DEFAULTS.pendudukTotal;
+  document.getElementById('pendudukLaki').value = d.pendudukLaki || DEFAULTS.pendudukLaki;
+  document.getElementById('pendudukPerempuan').value = d.pendudukPerempuan || DEFAULTS.pendudukPerempuan;
+
+  if (d.dusunList && d.dusunList.length) {
+    document.getElementById('dusunInput').value = d.dusunList.map(item => `${item.nama} | ${item.laki} | ${item.perempuan} | ${item.total}`).join('\n');
+  } else {
+    document.getElementById('dusunInput').value = DEFAULTS.dusunList.map(item => `${item.nama} | ${item.laki} | ${item.perempuan} | ${item.total}`).join('\n');
+  }
+
+  document.getElementById('pendidikanInput').value = d.pendidikanList || DEFAULTS.pendidikanList;
+  document.getElementById('pencaharianInput').value = d.pencaharianList || DEFAULTS.pencaharianList;
+  document.getElementById('ternakInput').value = d.ternakList || DEFAULTS.ternakList;
+  document.getElementById('prasaranaInput').value = d.prasaranaList || DEFAULTS.prasaranaList;
+
+  document.getElementById('potensiTitle').value = d.potensiTitle || DEFAULTS.potensiTitle;
+  document.getElementById('potensiSub').value = d.potensiSub || DEFAULTS.potensiSub;
+
+  document.getElementById('potensiTaniTitle').value = d.potensiTaniTitle || DEFAULTS.potensiTaniTitle;
   document.getElementById('potensiTani').value = d.potensiTani || DEFAULTS.potensiTani;
+  if (d.potensiTaniImg) document.getElementById('taniPreview').src = d.potensiTaniImg;
+
+  document.getElementById('potensiTernakTitle').value = d.potensiTernakTitle || DEFAULTS.potensiTernakTitle;
   document.getElementById('potensiTernak').value = d.potensiTernak || DEFAULTS.potensiTernak;
+  if (d.potensiTernakImg) document.getElementById('ternakPreview').src = d.potensiTernakImg;
+
   document.getElementById('kontakAlamat').value = d.kontakAlamat || DEFAULTS.kontakAlamat;
   document.getElementById('kontakWA').value = d.kontakWA || DEFAULTS.kontakWA;
   document.getElementById('kontakEmail').value = d.kontakEmail || DEFAULTS.kontakEmail;
   document.getElementById('kontakKode').value = d.kontakKode || DEFAULTS.kontakKode;
+
   renderGallery(d.gallery || DEFAULTS.gallery);
 }
 
@@ -296,7 +607,6 @@ function renderGallery(items) {
   ).join('');
 }
 
-// Drag & drop + file picker
 const dropzone = document.getElementById('dropzone');
 const fileInput = document.getElementById('fileInput');
 
@@ -319,15 +629,31 @@ function handleFiles(files) {
     if (!file.type.startsWith('image/')) return;
     const reader = new FileReader();
     reader.onload = ev => {
-      d.gallery.push({ src: ev.target.result, alt: alt || file.name });
-      count++;
-      if (count === files.length) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
-        renderGallery(d.gallery);
-        document.getElementById('newGalleryAlt').value = '';
-        fileInput.value = '';
-        showToast(`${count} gambar ditambahkan!`);
-      }
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width, h = img.height;
+        const maxDim = 1200;
+        if (w > maxDim || h > maxDim) {
+          if (w > h) { h = Math.round((h * maxDim) / w); w = maxDim; }
+          else { w = Math.round((w * maxDim) / h); h = maxDim; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w; canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+        d.gallery.push({ src: dataUrl, alt: alt || file.name });
+        count++;
+        if (count === files.length) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+          renderGallery(d.gallery);
+          document.getElementById('newGalleryAlt').value = '';
+          fileInput.value = '';
+          showToast(`${count} gambar ditambahkan!`);
+        }
+      };
+      img.src = ev.target.result;
     };
     reader.readAsDataURL(file);
   });
@@ -342,32 +668,105 @@ function removeGalleryItem(i) {
   showToast('Gambar dihapus!');
 }
 
-// SAVE
+// SAVE ALL
 function saveAll() {
+  const currentData = getData();
+
+  // Parse Pemerintahan
+  const pemRaw = document.getElementById('pemerintahanInput').value;
+  const pemerintahanList = pemRaw.split('\n').filter(s => s.trim()).map(line => {
+    const parts = line.split('|');
+    return { nama: parts[0]?.trim() || '', periode: parts[1]?.trim() || '' };
+  });
+
+  // Parse Dusun
+  const dusunRaw = document.getElementById('dusunInput').value;
+  const dusunList = dusunRaw.split('\n').filter(s => s.trim()).map(line => {
+    const parts = line.split('|');
+    return {
+      nama: parts[0]?.trim() || '',
+      laki: parts[1]?.trim() || '0',
+      perempuan: parts[2]?.trim() || '0',
+      total: parts[3]?.trim() || '0'
+    };
+  });
+
   const d = {
+    namaDesa: document.getElementById('namaDesa').value,
+    logoUrl: imageStore['logoFileInput'] || currentData.logoUrl || DEFAULTS.logoUrl,
+
+    heroBadge: document.getElementById('heroBadge').value,
     heroTitle: document.getElementById('heroTitle').value,
     heroSubtitle: document.getElementById('heroSubtitle').value,
+
+    ringkasanTitle: document.getElementById('ringkasanTitle').value,
+    ringkasanDesc: document.getElementById('ringkasanDesc').value,
+
+    card1Title: document.getElementById('card1Title').value,
+    card1Desc: document.getElementById('card1Desc').value,
+    card1Img: imageStore['card1FileInput'] || currentData.card1Img || DEFAULTS.card1Img,
+
+    card2Title: document.getElementById('card2Title').value,
+    card2Desc: document.getElementById('card2Desc').value,
+    card2Img: imageStore['card2FileInput'] || currentData.card2Img || DEFAULTS.card2Img,
+
+    card3Title: document.getElementById('card3Title').value,
+    card3Desc: document.getElementById('card3Desc').value,
+    card3Img: imageStore['card3FileInput'] || currentData.card3Img || DEFAULTS.card3Img,
+
     sejarahContent: document.getElementById('sejarahContent').value,
+    pemerintahanList: pemerintahanList,
+
     visiContent: document.getElementById('visiContent').value,
     misiContent: document.getElementById('misiContent').value,
+
+    strukturImg: imageStore['strukturFileInput'] || currentData.strukturImg || '',
+
+    geoLuas: document.getElementById('geoLuas').value,
+    geoSawah: document.getElementById('geoSawah').value,
+    geoKering: document.getElementById('geoKering').value,
+    geoUtara: document.getElementById('geoUtara').value,
+    geoSelatan: document.getElementById('geoSelatan').value,
+    geoTimur: document.getElementById('geoTimur').value,
+    geoBarat: document.getElementById('geoBarat').value,
+
+    pendudukTotal: document.getElementById('pendudukTotal').value,
+    pendudukLaki: document.getElementById('pendudukLaki').value,
+    pendudukPerempuan: document.getElementById('pendudukPerempuan').value,
+    dusunList: dusunList,
+    pendidikanList: document.getElementById('pendidikanInput').value,
+    pencaharianList: document.getElementById('pencaharianInput').value,
+    ternakList: document.getElementById('ternakInput').value,
+    prasaranaList: document.getElementById('prasaranaInput').value,
+
+    potensiTitle: document.getElementById('potensiTitle').value,
+    potensiSub: document.getElementById('potensiSub').value,
+    potensiTaniTitle: document.getElementById('potensiTaniTitle').value,
     potensiTani: document.getElementById('potensiTani').value,
+    potensiTaniImg: imageStore['taniFileInput'] || currentData.potensiTaniImg || DEFAULTS.potensiTaniImg,
+
+    potensiTernakTitle: document.getElementById('potensiTernakTitle').value,
     potensiTernak: document.getElementById('potensiTernak').value,
+    potensiTernakImg: imageStore['ternakFileInput'] || currentData.potensiTernakImg || DEFAULTS.potensiTernakImg,
+
     kontakAlamat: document.getElementById('kontakAlamat').value,
     kontakWA: document.getElementById('kontakWA').value,
     kontakEmail: document.getElementById('kontakEmail').value,
     kontakKode: document.getElementById('kontakKode').value,
-    gallery: getData().gallery || DEFAULTS.gallery
+
+    gallery: currentData.gallery || DEFAULTS.gallery
   };
+
   localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
-  showToast('✅ Semua perubahan tersimpan!');
+  showToast('✅ Semua data berhasil disimpan!');
 }
 
-// RESET
+// RESET ALL
 function resetAll() {
-  if (!confirm('Reset semua konten ke default? Perubahan akan hilang.')) return;
+  if (!confirm('Reset semua data ke pengaturan awal bawaan website? Perubahan Anda akan terhapus.')) return;
   localStorage.removeItem(STORAGE_KEY);
   loadForm();
-  showToast('Konten direset ke default');
+  showToast('Data direset ke default');
 }
 
 // Auto-login check
