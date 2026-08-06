@@ -37,6 +37,18 @@
     .nav-admin .container { display: flex; align-items: center; justify-content: space-between; }
     .nav-admin a { color: var(--green-800); font-weight: 600; font-family: 'Poppins', sans-serif; }
     textarea.content-area { min-height: 100px; }
+    .dropzone {
+      border: 2px dashed var(--gray-300); border-radius: var(--radius); padding: 40px 20px;
+      text-align: center; cursor: pointer; transition: all .3s ease;
+      background: var(--gray-50); margin-bottom: 16px;
+    }
+    .dropzone:hover, .dropzone.dragover {
+      border-color: var(--green-500); background: var(--green-50);
+    }
+    .dropzone__icon { font-size: 2.5rem; margin-bottom: 8px; opacity: .5; }
+    .dropzone__text { color: var(--gray-600); font-size: .9rem; }
+    .dropzone__text strong { color: var(--green-700); }
+    .dropzone input[type="file"] { display: none; }
   </style>
 </head>
 <body>
@@ -163,22 +175,20 @@
       </div>
     </div>
 
-    <!-- GALERI -->
+    <!-- DOKUMENTASI -->
     <div class="admin-section">
       <div class="card">
-        <h3>📷 Galeri</h3>
+        <h3>📷 Dokumentasi</h3>
         <div class="gallery-admin-grid" id="galleryGrid"></div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Tambah Gambar (URL)</label>
-            <input type="text" id="newGalleryUrl" placeholder="https://...">
-          </div>
-          <div class="form-group">
-            <label>Keterangan</label>
-            <input type="text" id="newGalleryAlt" placeholder="Deskripsi gambar">
-          </div>
+        <div class="dropzone" id="dropzone">
+          <div class="dropzone__icon">📁</div>
+          <div class="dropzone__text">Drag & drop gambar di sini, atau <strong>klik untuk pilih file</strong></div>
+          <input type="file" id="fileInput" accept="image/*" multiple>
         </div>
-        <button class="btn btn--green btn--sm" onclick="addGalleryItem()">+ Tambah Gambar</button>
+        <div class="form-group">
+          <label>Keterangan (opsional)</label>
+          <input type="text" id="newGalleryAlt" placeholder="Deskripsi gambar">
+        </div>
       </div>
     </div>
 
@@ -285,18 +295,41 @@ function renderGallery(items) {
   ).join('');
 }
 
-function addGalleryItem() {
-  const url = document.getElementById('newGalleryUrl').value.trim();
+// Drag & drop + file picker
+const dropzone = document.getElementById('dropzone');
+const fileInput = document.getElementById('fileInput');
+
+dropzone.addEventListener('click', () => fileInput.click());
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropzone.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+function handleFiles(files) {
   const alt = document.getElementById('newGalleryAlt').value.trim() || 'Foto Desa';
-  if (!url) return alert('Masukkan URL gambar!');
   const d = getData();
   if (!d.gallery) d.gallery = [...DEFAULTS.gallery];
-  d.gallery.push({ src: url, alt });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
-  renderGallery(d.gallery);
-  document.getElementById('newGalleryUrl').value = '';
-  document.getElementById('newGalleryAlt').value = '';
-  showToast('Gambar ditambahkan!');
+  let count = 0;
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      d.gallery.push({ src: ev.target.result, alt: alt || file.name });
+      count++;
+      if (count === files.length) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+        renderGallery(d.gallery);
+        document.getElementById('newGalleryAlt').value = '';
+        fileInput.value = '';
+        showToast(`${count} gambar ditambahkan!`);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
 function removeGalleryItem(i) {
